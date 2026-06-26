@@ -1,0 +1,151 @@
+<div align="center">
+
+<img src=".github/assets/logo.png" alt="CompanyOS" width="96" height="96" />
+
+# CompanyOS
+
+**The coordination layer for your whole company.**
+
+Projects, meetings, tasks, and docs in one place — every decision keeps its context,
+and the AI runs on your own key.
+
+[![License](https://img.shields.io/badge/license-Apache--2.0-5B5BD6.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/woosal1337/companyos?color=5B5BD6)](https://github.com/woosal1337/companyos/releases)
+[![CI](https://github.com/woosal1337/companyos/actions/workflows/ci.yml/badge.svg)](https://github.com/woosal1337/companyos/actions/workflows/ci.yml)
+[![Stars](https://img.shields.io/github/stars/woosal1337/companyos?style=flat&color=5B5BD6)](https://github.com/woosal1337/companyos/stargazers)
+[![Containers](https://img.shields.io/badge/ghcr.io-companyos-5B5BD6?logo=docker&logoColor=white)](https://github.com/woosal1337?tab=packages)
+
+[Quick start](#quick-start) · [Features](#features) · [Architecture](#architecture) · [Self-hosting](#self-hosting) · [Development](#development)
+
+</div>
+
+---
+
+## Why CompanyOS
+
+Most companies run on a dozen disconnected tools — one app for tasks, another for
+docs, another for meetings — and the context that ties a decision to its work gets
+lost in the gaps. CompanyOS is a single, multi-tenant coordination layer where
+**projects, tasks, meetings, notes, and the people doing the work live together**,
+so every task traces back to the conversation that created it.
+
+It's **AI-native and bring-your-own-key**: the in-product assistant and the MCP
+"company-brain" server run on *your* org's API keys, and everything is **open
+source and self-hostable** — your data stays on your infrastructure.
+
+## Features
+
+**Plan & track**
+- Projects with leads, members, states, and templates
+- Tasks with List, Board (Kanban), and Table views, sub-tasks, labels, priorities, and a query language (PQL)
+- Cycles (sprints), Initiatives, Milestones, and Releases for planning at every altitude
+- Intake & triage — turn inbound requests and forms into tracked work
+
+**Meetings & knowledge**
+- Speaker-attributed meeting transcripts, AI summaries, and "ask the meeting"
+- Notes, wiki, and docs with **live, multi-cursor co-editing** (Yjs)
+- Retrospectives and reusable meeting templates
+
+**AI & MCP**
+- In-product AI assistant over your company brain — **bring your own key** (per-org)
+- AI agents with budgets, automations, and a sandboxed runner
+- A built-in **MCP server** exposing the whole workspace to agents over OAuth, plus connectors and a marketplace
+
+**Collaboration**
+- Threaded comments, reactions, and resolve across every entity
+- Activity feeds, notifications, full-text search, favorites, and stickies
+- Public embeds and shareable links
+
+**Enterprise & platform**
+- True multi-tenancy with org-scoped data isolation
+- SSO (SAML / OIDC), SCIM, LDAP, IdP group sync, and domain verification
+- Role-based access control with audit logs, approvals, and compliance surfaces
+- Webhooks, an outbox/event backbone, S3-compatible object storage, and analytics dashboards
+
+## Quick start
+
+Run the whole stack — Postgres, the API, and the web app — with one command.
+Requires [Docker](https://docs.docker.com/get-docker/) with the Compose plugin.
+
+```bash
+git clone https://github.com/woosal1337/companyos.git
+cd companyos
+cp .env.example .env
+docker compose up --build
+```
+
+Then open **http://localhost:3000**. The API is on **http://localhost:8000**
+(health at `/api/v1/health`), and database migrations run automatically on start.
+
+The `.env.example` defaults are for **local evaluation only**. For a real
+deployment, generate fresh secrets and switch to production mode:
+
+```bash
+# in .env
+COMPANYOS_KEK=$(python3 -c "import base64,os;print(base64.urlsafe_b64encode(os.urandom(32)).decode())")
+JWT_SECRET_KEY=$(openssl rand -hex 32)
+ENV=production            # secure cookies — serve the web app over HTTPS
+```
+
+In `production` mode the API refuses to start unless `COMPANYOS_KEK` and
+`JWT_SECRET_KEY` are set to strong, non-default values.
+
+## Architecture
+
+CompanyOS is a monorepo with two deployable services and one database.
+
+```
+            ┌──────────────┐        ┌──────────────┐        ┌──────────────┐
+  browser → │   web (3000) │  /api  │   api (8000) │  SQL   │  PostgreSQL  │
+            │   Next.js    │ ─────► │   FastAPI    │ ─────► │              │
+            └──────────────┘        └──────────────┘        └──────────────┘
+```
+
+```
+companyos/
+├── apps/
+│   ├── api/   FastAPI · SQLAlchemy · Alembic · Postgres   (the backend)
+│   └── web/   Next.js · Turborepo · Tailwind              (the web UI)
+├── docker-compose.yml    one-command full stack
+└── .env.example
+```
+
+- **Backend** — Python / FastAPI, async SQLAlchemy, Alembic migrations, an in-process
+  realtime relay for co-editing, and an MCP server. Runs as a single container; its
+  only dependency is Postgres.
+- **Web** — Next.js (standalone output) talking to the API through a same-origin
+  `/api` proxy. Deployable as a container or on any Next.js host.
+
+## Self-hosting
+
+The Docker Compose path above is the fastest way to run CompanyOS. For Kubernetes
+(Helm or raw manifests), Docker Swarm, and a full configuration reference, see
+**[`apps/api/SELF-HOSTING.md`](apps/api/SELF-HOSTING.md)** and `apps/api/deploy/`.
+
+Tagged releases publish container images to GHCR:
+`ghcr.io/woosal1337/companyos-api` and `ghcr.io/woosal1337/companyos-web`.
+
+## Development
+
+Each app can be run and developed on its own:
+
+- **Backend** — [`apps/api`](apps/api) (uv, ruff, mypy, pytest; `uv run uvicorn companyos.main:app`)
+- **Web** — [`apps/web`](apps/web) (Bun, Turborepo; `bun run dev`)
+
+See each app's `README.md` and `CONVENTIONS.md` for the project rules. The web app
+talks to the API via the `BACKEND_ORIGIN` build argument.
+
+## Mobile
+
+A companion mobile app (React Native / Expo) lives in a separate repository.
+
+## Contributing
+
+Contributions are welcome. Please read the conventions in
+[`apps/api/CONVENTIONS.md`](apps/api/CONVENTIONS.md) and
+[`apps/web/CONVENTIONS.md`](apps/web/CONVENTIONS.md) before opening a pull request,
+and make sure `ci` (lint, typecheck, tests, build) passes.
+
+## License
+
+Licensed under the [Apache License 2.0](LICENSE).

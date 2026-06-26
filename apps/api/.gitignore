@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+.env
+.env.*
+!.env.example
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.DS_Store
+.idea/
+.vscode/
+
+# internal planning docs (kept out of the public release)
+BACKEND-TASKS.md
+MCP-COMPANY-BRAIN-PLAN.md

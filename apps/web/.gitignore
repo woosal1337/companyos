@@ -1,0 +1,16 @@
+node_modules/
+.next/
+.turbo/
+out/
+dist/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+next-env.d.ts
+*.tsbuildinfo
+
+# internal planning / research docs (kept out of the public release)
+.impeccable/

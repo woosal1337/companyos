@@ -1,0 +1,14 @@
+{
+  "invitation": {
+    "file": "invitation.html",
+    "tokens": [
+      "inviterName",
+      "orgName",
+      "projectName",
+      "role",
+      "acceptUrl",
+      "expiresIn"
+    ],
+    "subject": "{inviterName} invited you to {orgName} on CompanyOS"
+  }
+}
