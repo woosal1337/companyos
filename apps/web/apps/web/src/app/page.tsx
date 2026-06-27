@@ -5,7 +5,6 @@ import { LogoCloud } from "@/components/marketing/logo-cloud";
 import { DeepDive } from "@/components/marketing/deep-dive";
 import { NowGrid } from "@/components/marketing/now-grid";
 import { SceneStrip } from "@/components/marketing/scene-strip";
-import { BoldBand } from "@/components/marketing/bold-band";
 import { FinalCTA } from "@/components/marketing/final-cta";
 import { SiteFooter } from "@/components/marketing/site-footer";
 
@@ -31,7 +30,6 @@ export default function LandingPage() {
         <DeepDive />
         <NowGrid />
         <SceneStrip />
-        <BoldBand />
         <FinalCTA />
       </main>
       <SiteFooter />

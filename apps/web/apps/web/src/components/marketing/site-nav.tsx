@@ -6,7 +6,6 @@ import { Logo, MarketingNav, type NavLink as NavLinkType } from "@companyos/ui";
 const NAV_LINKS: NavLinkType[] = [
   { label: "Product", href: "#how-it-works" },
   { label: "Resources", href: "#resources" },
-  { label: "Customers", href: "#customers" },
   { label: "Pricing", href: "#pricing" },
   { label: "Now", href: "#now" },
   { label: "Contact", href: "#contact" },
