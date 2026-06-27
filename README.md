@@ -14,8 +14,9 @@ alongside your team, over a built-in MCP server, on your own keys.
 [![CI](https://github.com/woosal1337/companyos/actions/workflows/ci.yml/badge.svg)](https://github.com/woosal1337/companyos/actions/workflows/ci.yml)
 [![Stars](https://img.shields.io/github/stars/woosal1337/companyos?style=flat&color=5B5BD6)](https://github.com/woosal1337/companyos/stargazers)
 [![Containers](https://img.shields.io/badge/ghcr.io-companyos-5B5BD6?logo=docker&logoColor=white)](https://github.com/woosal1337?tab=packages)
+[![Docs](https://img.shields.io/badge/docs-company.chele.bi-5B5BD6.svg)](https://docs.company.chele.bi)
 
-[Quick start](#quick-start) · [Features](#features) · [Architecture](#architecture) · [Self-hosting](#self-hosting) · [Development](#development)
+[Quick start](#quick-start) · [Docs](https://docs.company.chele.bi) · [Features](#features) · [Architecture](#architecture) · [Self-hosting](#self-hosting) · [Development](#development)
 
 </div>
 
@@ -76,6 +77,9 @@ docker compose up --build
 
 Then open **http://localhost:3000**. The API is on **http://localhost:8000**
 (health at `/api/v1/health`), and database migrations run automatically on start.
+
+Full documentation, guides, and the company-brain MCP reference live at
+**[docs.company.chele.bi](https://docs.company.chele.bi)**.
 
 The `.env.example` defaults are for **local evaluation only**. For a real
 deployment, generate fresh secrets and switch to production mode:
