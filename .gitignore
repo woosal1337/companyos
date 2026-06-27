@@ -1,0 +1,17 @@
+# Local environment / secrets
+.env
+.env.local
+*.local
+.vercel
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# (Per-app .gitignore files under apps/api and apps/web cover their own build
+#  artifacts, node_modules, .venv, .next, .turbo, caches, etc.)

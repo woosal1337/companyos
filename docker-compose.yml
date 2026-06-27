@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-companyos}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-companyos}
+      POSTGRES_DB: ${POSTGRES_DB:-companyos}
+    volumes:
+      - companyos_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-companyos} -d ${POSTGRES_DB:-companyos}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: ./apps/api
+    image: companyos-api:local
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-companyos}:${POSTGRES_PASSWORD:-companyos}@postgres:5432/${POSTGRES_DB:-companyos}
+      COMPANYOS_KEK: ${COMPANYOS_KEK:-6TTRiEDAMzSkS6g3YKCQCjbqx9mUnCO3Rsop01k0FSY=}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-local-dev-jwt-secret-change-in-production}
+      ENV: ${ENV:-development}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:3000}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/v1/health').status==200 else 1)"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        BACKEND_ORIGIN: ${BACKEND_ORIGIN:-http://api:8000}
+    image: companyos-web:local
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+
+volumes:
+  companyos_pgdata:

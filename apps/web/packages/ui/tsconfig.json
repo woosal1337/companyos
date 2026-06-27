@@ -1,0 +1,8 @@
+{
+  "extends": "@companyos/typescript-config/react-library.json",
+  "compilerOptions": {
+    "types": ["react", "react-dom"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.test.ts", "**/*.test.tsx"]
+}
