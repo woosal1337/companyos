@@ -1,4 +1,4 @@
-import { BoldQuote, Container, Section, SectionNumber } from "@companyos/ui";
+import { Container, Section, SectionNumber } from "@companyos/ui";
 
 const METRICS = [
   { value: "1", label: "system of record for projects, meetings, and tasks" },
@@ -26,18 +26,22 @@ export function BoldBand() {
             ))}
           </dl>
           <div className="grid gap-6 lg:grid-cols-2">
-            <BoldQuote
-              tone="lavender"
-              quote="Our agents pick up tasks off the same board we do. The meeting, the task, and the owner live in one place, and nothing slips between standups."
-              name="Mara Velasquez"
-              role="Head of Operations, Northwind"
-            />
-            <BoldQuote
-              tone="acid"
-              quote="Our own keys, our own data, one model of the company. I wired our agents into CompanyOS over MCP in an afternoon and it has held up under real load since."
-              name="Daniel Okoye"
-              role="Founding Engineer, Vertex"
-            />
+            <div className="flex min-h-80 flex-col justify-between gap-12 rounded-2xl bg-lavender p-10 text-lavender-foreground sm:p-14">
+              <p className="font-display text-h2 tracking-tight">
+                Agents are members, not a chatbot. They run the same board, tasks, and meetings your team does, over a built-in MCP server. Bidirectional, and scoped to your org.
+              </p>
+              <p className="font-mono text-mono-label uppercase tracking-wide opacity-70">
+                Agent-native MCP
+              </p>
+            </div>
+            <div className="flex min-h-80 flex-col justify-between gap-12 rounded-2xl bg-bold p-10 text-bold-foreground sm:p-14">
+              <p className="font-display text-h2 tracking-tight">
+                Bring your own model key. Every AI call runs on it and lands in an audit log, and your data stays on your own infrastructure. Open source, and self-hosted.
+              </p>
+              <p className="font-mono text-mono-label uppercase tracking-wide opacity-70">
+                Your keys, your data
+              </p>
+            </div>
           </div>
         </div>
       </Container>
