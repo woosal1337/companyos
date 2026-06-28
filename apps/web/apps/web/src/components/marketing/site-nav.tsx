@@ -4,11 +4,10 @@ import Link from "next/link";
 import { Logo, MarketingNav, type NavLink as NavLinkType } from "@companyos/ui";
 
 const NAV_LINKS: NavLinkType[] = [
-  { label: "Product", href: "#how-it-works" },
-  { label: "Resources", href: "#resources" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Now", href: "#now" },
-  { label: "Contact", href: "#contact" },
+  { label: "Product", href: "/#how-it-works" },
+  { label: "Docs", href: "https://docs.company.chele.bi" },
+  { label: "Now", href: "/#now" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function SiteNav() {
@@ -20,7 +19,15 @@ export function SiteNav() {
         </Link>
       }
       links={NAV_LINKS}
-      renderLink={(link) => <Link href={link.href}>{link.label}</Link>}
+      renderLink={(link) =>
+        /^https?:\/\//.test(link.href) ? (
+          <a href={link.href} target="_blank" rel="noopener noreferrer">
+            {link.label}
+          </a>
+        ) : (
+          <Link href={link.href}>{link.label}</Link>
+        )
+      }
       loginHref="/login"
       signupHref="/signup"
     />

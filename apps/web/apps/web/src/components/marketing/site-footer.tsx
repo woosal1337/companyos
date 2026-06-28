@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { cn, Container, Logo } from "@companyos/ui";
 
@@ -17,54 +18,52 @@ const COLUMNS: FooterColumn[] = [
     index: "01",
     heading: "Product",
     links: [
-      { label: "Projects", href: "#projects" },
-      { label: "Meetings", href: "#meetings" },
-      { label: "Notes", href: "#notes" },
-      { label: "Activity", href: "#activity" },
+      { label: "Projects", href: "/projects" },
+      { label: "Meetings", href: "/meetings" },
+      { label: "Notes", href: "/notes" },
+      { label: "Activity", href: "/activity" },
     ],
   },
   {
     index: "02",
     heading: "Features",
     links: [
-      { label: "BYOK", href: "#byok" },
-      { label: "Board", href: "#board" },
-      { label: "Transcripts", href: "#transcripts" },
-      { label: "Activity log", href: "#activity-log" },
+      { label: "BYOK", href: "https://docs.company.chele.bi/ai-byok-assistant" },
+      { label: "Board", href: "https://docs.company.chele.bi/workflows-statuses-transitions" },
+      { label: "Transcripts", href: "https://docs.company.chele.bi/meetings" },
+      { label: "Activity log", href: "https://docs.company.chele.bi/activity-calendar-inbox" },
     ],
   },
   {
     index: "03",
     heading: "Company",
     links: [
-      { label: "About", href: "#about" },
-      { label: "Careers", href: "#careers" },
-      { label: "Blog", href: "#blog" },
-      { label: "Contact", href: "#contact" },
+      { label: "About", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
     index: "04",
     heading: "Resources",
     links: [
-      { label: "Docs", href: "#docs" },
-      { label: "Changelog", href: "#changelog" },
-      { label: "Status", href: "#status" },
+      { label: "Docs", href: "https://docs.company.chele.bi" },
+      { label: "Changelog", href: "/changelog" },
     ],
   },
   {
     index: "05",
     heading: "Connect",
     links: [
-      { label: "X (Twitter)", href: "https://x.com" },
-      { label: "GitHub", href: "https://github.com" },
+      { label: "X (Twitter)", href: "https://x.com/woosal1337" },
+      { label: "GitHub", href: "https://github.com/woosal1337/companyos" },
     ],
   },
 ];
 
 const LEGAL: FooterLink[] = [
-  { label: "Privacy", href: "#privacy" },
-  { label: "Terms", href: "#terms" },
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" },
 ];
 
 const linkClass =
@@ -72,6 +71,31 @@ const linkClass =
 
 const legalClass =
   "text-caption text-muted-foreground transition-colors duration-150 hover:text-foreground";
+
+const isExternal = (href: string) => /^https?:\/\//.test(href);
+
+function FooterLinkItem({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className: string;
+  children: ReactNode;
+}) {
+  if (isExternal(href)) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
 
 export function SiteFooter() {
   return (
@@ -95,9 +119,9 @@ export function SiteFooter() {
                 <ul className="flex flex-col gap-3">
                   {column.links.map((link) => (
                     <li key={link.href}>
-                      <Link href={link.href} className={linkClass}>
+                      <FooterLinkItem href={link.href} className={linkClass}>
                         {link.label}
-                      </Link>
+                      </FooterLinkItem>
                     </li>
                   ))}
                 </ul>
@@ -108,9 +132,9 @@ export function SiteFooter() {
         <div className="mt-20 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 sm:flex-row sm:items-center">
           <div className="flex items-center gap-6">
             {LEGAL.map((link) => (
-              <Link key={link.href} href={link.href} className={cn(legalClass)}>
+              <FooterLinkItem key={link.href} href={link.href} className={cn(legalClass)}>
                 {link.label}
-              </Link>
+              </FooterLinkItem>
             ))}
           </div>
           <p className="text-caption text-muted-foreground">© 2026 CompanyOS</p>

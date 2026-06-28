@@ -70,3 +70,5 @@ jobs:
         run: bunx turbo run typecheck
       - name: Build
         run: bunx turbo run build
+      - name: Test marketing links
+        run: bun test apps/web/src/components/marketing/site-links.test.ts
